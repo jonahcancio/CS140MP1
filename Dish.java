@@ -6,14 +6,19 @@ public class Dish {
 	int currentActionIndex;
 	boolean hasStarted;
 	int startTime;
-	int order;
 
 	public Dish(String name) {
 		this.name = name;
+		currentActionIndex = 0;
 	}
 }
 
 class Action {
 	String name;
 	int timeLeft;
+
+	public Action(String name, int timeLeft) {
+		this.name = name;
+		this.timeLeft = timeLeft;
+	}
 }
