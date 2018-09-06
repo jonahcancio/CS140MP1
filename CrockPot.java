@@ -35,7 +35,7 @@ public class CrockPot {
 		}
 
 		Action a = gordonQueue.get(2).aQueue.get(3);
-		a.timeLeft--;
+		a.timeLeft-=2;
 
 		for (Dish dish : gordonQueue){
 			System.out.println(dish.name + " => " + dish.aQueue.get(3).name + " - " + dish.aQueue.get(3).timeLeft);
