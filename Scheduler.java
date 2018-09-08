@@ -12,7 +12,7 @@ public class Scheduler{
     }
 
     public Dish whatIsCookNext (Dish dishBeingCooked){
-
+        return null;//will be decided by the type of scheduling (in this case FCFS)
     }
 
     public void incrementTime(){
@@ -23,10 +23,7 @@ public class Scheduler{
         for(Dish dish : AssistantQueue){//check for any dish done with current assistance task
             if(dish.aQueue.get(dish.currentActionIndex).timeLeft == 0){
                 if(dish.aQueue.get(dish.currentActionIndex+1).name.equals("cook")){//if the next task requires cooking, remove it from the Assistant queue, add it to ready queue for cooking
-<<<<<<< HEAD
                     dish.currentActionIndex++;
-=======
->>>>>>> 5d0e5ea5a2bee15851e37b25c6185066c18fd291
                     AssistantQueue.remove(dish);
                     ReadyQueue.add(dish);
                 }
@@ -60,7 +57,7 @@ public class Scheduler{
                     ReadyQueue.remove(0);
                 }
             }
-            
+
         }else{//if not done cooking, subtract 1 from time
             dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft--;
         }
@@ -70,7 +67,7 @@ public class Scheduler{
         for(Dish dish: CrockPot.gordonQueue){
             if(time == dish.startTime){
                 ReadyQueue.add(dish);
-                gordonQueue.remove(dish);
+                CrockPot.gordonQueue.remove(dish);
             }
         }
     }
