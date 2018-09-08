@@ -7,14 +7,12 @@ public class Scheduler{
     ArrayList<Dish> AssistantQueue = new ArrayList<Dish>();
     ArrayList<String> RemarksQueue = new ArrayList<String>();
 
-    public Scheduler(){
-        time = 0;
+    public Scheduler(int currentTime){
+        time = currentTime;
     }
 
     public Dish whatIsCookNext (Dish dishBeingCooked){
-        Dish nextDish = new Dish("Hello");//this is only temporary so that the code compiles
 
-        return nextDish;
     }
 
     public void incrementTime(){
@@ -24,7 +22,8 @@ public class Scheduler{
     public void assistantUpdate(){//updates the assistant queue at everytime increment (do this before the cookingUpdate)
         for(Dish dish : AssistantQueue){//check for any dish done with current assistance task
             if(dish.aQueue.get(dish.currentActionIndex).timeLeft == 0){
-                if(dish.aQueue.get(dish.currentActionIndex).name.equals("cook")){//if the next task requires cooking, remove it from the Assistant queue, add it to ready queue for cooking
+                if(dish.aQueue.get(dish.currentActionIndex+1).name.equals("cook")){//if the next task requires cooking, remove it from the Assistant queue, add it to ready queue for cooking
+                    dish.currentActionIndex++;
                     AssistantQueue.remove(dish);
                     ReadyQueue.add(dish);
                 }
@@ -49,16 +48,27 @@ public class Scheduler{
     public void cookUpdate(){//updates ReadyQueue and current dish at every time increment
         if(dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft == 0){//if dish is done cooking, move onto the next task
             dishBeingCooked.currentActionIndex += 1;
+
             while(!dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).equals("cook") && ReadyQueue.get(0) != null){//loop until we get a dish that needs cooking
-                dishBeingCooked = ReadyQueue.get(0);
+                dishBeingCooked = whatIsCookNext(dishBeingCooked);
                 if(!dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).equals("cook")){//if dish doesn't need cooking, move it to assistant Queue
                     AssistantQueue.add(dishBeingCooked);
                     dishBeingCooked = null;
                     ReadyQueue.remove(0);
                 }
             }
+            
         }else{//if not done cooking, subtract 1 from time
             dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft--;
+        }
+    }
+
+    public void readyUpdate(){//adds additional dishes to the ReadyQueue based on the tasklist
+        for(Dish dish: CrockPot.gordonQueue){
+            if(time == dish.startTime){
+                ReadyQueue.add(dish);
+                gordonQueue.remove(dish);
+            }
         }
     }
 }
