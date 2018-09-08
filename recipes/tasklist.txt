@@ -1,0 +1,4 @@
+adobo 1
+tinola 5
+karekare 8
+adobo 14

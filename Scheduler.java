@@ -23,7 +23,10 @@ public class Scheduler{
         for(Dish dish : AssistantQueue){//check for any dish done with current assistance task
             if(dish.aQueue.get(dish.currentActionIndex).timeLeft == 0){
                 if(dish.aQueue.get(dish.currentActionIndex+1).name.equals("cook")){//if the next task requires cooking, remove it from the Assistant queue, add it to ready queue for cooking
+<<<<<<< HEAD
                     dish.currentActionIndex++;
+=======
+>>>>>>> 5d0e5ea5a2bee15851e37b25c6185066c18fd291
                     AssistantQueue.remove(dish);
                     ReadyQueue.add(dish);
                 }
