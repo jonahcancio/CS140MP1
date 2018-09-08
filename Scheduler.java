@@ -24,7 +24,7 @@ public class Scheduler{
     public void assistantUpdate(){//updates the assistant queue at everytime increment (do this before the cookingUpdate)
         for(Dish dish : AssistantQueue){//check for any dish done with current assistance task
             if(dish.aQueue.get(dish.currentActionIndex).timeLeft == 0){
-                if(dish.aQueue.get(dish.currentActionIndex).name.equals("cook")){//if the next task requires cooking, remove it from the Assistant queue, add it to ready queue for cooking
+                if(dish.aQueue.get(dish.currentActionIndex+1).name.equals("cook")){//if the next task requires cooking, remove it from the Assistant queue, add it to ready queue for cooking
                     AssistantQueue.remove(dish);
                     ReadyQueue.add(dish);
                 }
