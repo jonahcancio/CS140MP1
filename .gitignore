@@ -1,5 +1,6 @@
 #ignore class files
 *.class
 
-#ignore html files
+#ignore html files except Jandel
 *.html
+!JandelOutput.html

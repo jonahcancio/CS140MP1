@@ -5,40 +5,48 @@ import java.io.*;
 import java.lang.StringBuilder;
 
 public class CrockPot {
-	static String outputFileName = "JandelOutput.html";
-	static String taskListDemo = "adobo 1\n"
+	String outputFileName;
+	String taskFileName;
+	String taskListDemo = "adobo 1\n"
 		+ "tinola 5\n"
 		+ "karekare 8\n"
 		+ "adobo 14\n";
-	static String recipeDemo = "cook 30\n"
+	String recipeDemo = "cook 30\n"
 		+ "mix 5\n"
 		+ "cook 30\n"
 		+ "sauce 7\n"
 		+ "cook 10\n";
-	static ArrayList<Dish> gordonQueue = new ArrayList<Dish>();
-	static HashMap<String, Integer> gordonMap = new HashMap<String, Integer>();
-	static String gordonTable = "";
-	static String gordonHtml = "";
+	ArrayList<Dish> gordonQueue;
+	HashMap<String, Integer> gordonMap;
+	String gordonTable;
+	String gordonHtml;
+
+	public CrockPot() {
+		outputFileName = "JandelOutput.html";
+		taskFileName = "recipes/Tasklist.txt";
+		gordonQueue = new ArrayList<Dish>();
+		gordonMap = new HashMap<String, Integer>();
+		gordonTable = "";
+		gordonHtml = "";
+	}
 
 	public static void main(String args[]) throws IOException{
-		FileReader taskFile = new FileReader("recipes/tasklist.txt");
-		BufferedReader taskReader = new BufferedReader(taskFile);
+		CrockPot myself = new CrockPot();
 
+		myself.initGordonQueue();
+		myself.initGordonTable();
+		System.out.println(myself.gordonTable);
 
-		fileDemoLoop(taskReader);
-		initGordonHtml();
+		myself.htmlizeGordonTable();
+		// myself.washOutGordonFromHtml();
 
-		initGordonTable();
-		insertGordonTable();
-		System.out.println(gordonHtml);
-		outputGordonHtml();
-
-		taskReader.close();
-		taskFile.close();
 	}
 
 
-	static void fileDemoLoop(BufferedReader taskReader) throws IOException{
+	public void initGordonQueue() throws IOException {
+		FileReader taskFile = new FileReader(taskFileName);
+		BufferedReader taskReader = new BufferedReader(taskFile);
+
 		String taskLine;
 		while ((taskLine = taskReader.readLine()) != null) {
 			String dishName = taskLine.split("\\s")[0];//get 1st word of taskLine
@@ -60,9 +68,107 @@ public class CrockPot {
 			gordonQueue.add(newDish);
 		}
 
+		taskReader.close();
+		taskFile.close();
 	}
 
-	static void stringDemoLoop() {
+	public void resetGordonTable() {
+		gordonTable = "";
+	}
+
+	public void beginGordonTable() {
+		gordonTable += "<table class='ui celled padded table'>" + System.lineSeparator();
+		gordonTable += "\t<thead>" + System.lineSeparator()
+			+ "\t\t<tr>" +  System.lineSeparator()
+			+ "\t\t\t<th>Time</th>" +  System.lineSeparator()
+			+ "\t\t\t<th>Cook</th>" +  System.lineSeparator()
+			+ "\t\t\t<th>Ready</th>" +  System.lineSeparator()
+			+ "\t\t\t<th>Assistants</th>" +  System.lineSeparator()
+			+ "\t\t\t<th>Remarks</th>" +  System.lineSeparator()
+			+ "\t\t</tr>" +  System.lineSeparator()
+			+ "\t</thead>" +  System.lineSeparator();
+		gordonTable += "\t<tbody>" + System.lineSeparator();
+	}
+
+	public void endGordonTable() {
+		gordonTable += "\t</tbody>" + System.lineSeparator();
+		gordonTable += "</table>" + System.lineSeparator();
+	}
+
+	public void beginGordonRow() {
+		gordonTable += "\t\t<tr>" +  System.lineSeparator();
+	}
+
+	public void endGordonRow() {
+		gordonTable += "\t\t</tr>" +  System.lineSeparator();
+	}
+
+	public void addGordonColumn(String content) {
+		String startTag = "";
+		String endTag = "";
+		if (content.indexOf(System.lineSeparator()) < 0) {
+			startTag =  "\t\t\t<td>";
+			endTag = "</td>";
+		} else {
+			startTag =  "\t\t\t<td>" + System.lineSeparator();
+			endTag = "\t\t\t</td>";
+		}
+		gordonTable += startTag + content + endTag + System.lineSeparator();
+	}
+
+//html reading and writing functions begin HERE
+
+	public void htmlizeGordonTable() throws IOException{
+		initGordonHtml();
+		clearHtmlTable();
+		insertGordonTable();
+		outputGordonHtml();
+	}
+
+	public void washOutGordonFromHtml() throws IOException{
+		initGordonHtml();
+		clearHtmlTable();
+		outputGordonHtml();
+	}
+
+	void initGordonHtml() throws IOException {
+		FileReader outputFile = new FileReader(outputFileName);
+		BufferedReader outputReader = new BufferedReader(outputFile);
+		String htmlLine;
+		gordonHtml = "";
+		while ( (htmlLine = outputReader.readLine() ) != null) {
+			gordonHtml += htmlLine + System.lineSeparator();
+		}
+		outputReader.close();
+		outputFile.close();
+	}
+
+	void clearHtmlTable() {
+		String startTag = "<!--START HERE-->" + System.lineSeparator();
+		String endTag = "<!--END HERE-->";
+		StringBuilder gordonBuilder = new StringBuilder(gordonHtml);
+		int startIndex = gordonBuilder.indexOf(startTag) + startTag.length();
+		int endIndex = gordonBuilder.indexOf(endTag);
+		gordonBuilder.delete(startIndex, endIndex);
+		gordonHtml = gordonBuilder.toString();
+	}
+
+	void insertGordonTable() throws IOException{
+		String startTag = "<!--START HERE-->" + System.lineSeparator();
+		StringBuilder gordonBuilder = new StringBuilder(gordonHtml);
+		gordonBuilder.insert(gordonHtml.indexOf(startTag) + startTag.length(), gordonTable);
+		gordonHtml = gordonBuilder.toString();
+	}
+
+	void outputGordonHtml() throws IOException{
+		FileWriter outputFile = new FileWriter(outputFileName);
+		outputFile.write(gordonHtml);
+		outputFile.close();
+	}
+//html reading and writing functions end HERE
+
+//debuf functions begin HERE
+	void stringDemoLoop() {
 		for (String taskLine : taskListDemo.split("\\n")) {
 			String dishName = taskLine.split("\\s")[0];//get 1st word of taskLine
 			gordonMap.put(dishName, gordonMap.containsKey(dishName)? gordonMap.get(dishName)+1 : 1);//adds 1 to map value if already in key map, else adds to key map with value of 1
@@ -81,7 +187,7 @@ public class CrockPot {
 		}
 	}
 
-	static void consoleLogGordonQueue() {
+	void consoleLogGordonQueue() {
 		for (Dish dish : gordonQueue){
 			System.out.println(dish.name + " - " + dish.startTime +":");
 			for(Action act : dish.aQueue) {
@@ -91,70 +197,27 @@ public class CrockPot {
 		}
 	}
 
-
-	static void initGordonTable() {
-		gordonTable += "<table class='ui celled padded table'>" + System.lineSeparator();
-		gordonTable += "\t<thead>" + System.lineSeparator()
-			+ "\t\t<tr>" +  System.lineSeparator()
-			+ "\t\t\t<th>Time</th>" +  System.lineSeparator()
-			+ "\t\t\t<th>Dish</th>" +  System.lineSeparator()
-			+ "\t\t\t<th>Actions</th>" +  System.lineSeparator()
-			+ "\t\t\t<th>TimeLefts</th>" +  System.lineSeparator()
-			+ "\t\t\t<th>Remarks</th>" +  System.lineSeparator()
-			+ "\t\t</tr>" +  System.lineSeparator()
-			+ "\t</thead>" +  System.lineSeparator();
-
-		gordonTable += "\t<tbody>" + System.lineSeparator();
-		int i = 1;
+	void initGordonTable() {
+		resetGordonTable();
+		beginGordonTable();
+		int i = 0;
 		for (Dish dish : gordonQueue){
-			gordonTable += "\t\t<tr>" +  System.lineSeparator();
-			gordonTable += "\t\t\t<td>" + i + "</td>" + System.lineSeparator();
-			gordonTable += "\t\t\t<td>" + dish.name + " - " + dish.startTime + "</td>" + System.lineSeparator();
-			gordonTable += "\t\t\t<td>" + System.lineSeparator();
+			beginGordonRow();
+			addGordonColumn(Integer.toString(dish.startTime));
+			addGordonColumn(dish.name);
+			String actNamesString = "";
+			String actTimesString = "";
 			for(Action act : dish.aQueue) {
-				gordonTable += "\t\t\t\t<p>" + act.name + " - " + act.timeLeft + "</p" + System.lineSeparator();
+				actNamesString += "\t\t\t\t<p>" + act.name + "</p>" + System.lineSeparator();
+				actTimesString += "\t\t\t\t<p>" + act.timeLeft + "</p>" + System.lineSeparator();
 			}
-			gordonTable += "\t\t\t</td>" + System.lineSeparator();
+			addGordonColumn(actNamesString);
+			addGordonColumn(actTimesString);
 			i++;
-			gordonTable += "\t\t</tr>" +  System.lineSeparator();
+			endGordonRow();
 		}
-		gordonTable += "\t</tbody>" + System.lineSeparator();
-		gordonTable += "</table>" + System.lineSeparator();
+		endGordonTable();
 	}
 
-	static void initGordonHtml() throws IOException {
-		FileReader outputFile = new FileReader(outputFileName);
-		BufferedReader outputReader = new BufferedReader(outputFile);
-		String htmlLine;
-		while ( (htmlLine = outputReader.readLine() ) != null) {
-			gordonHtml += htmlLine + System.lineSeparator();
-		}
-		outputReader.close();
-		outputFile.close();
-	}
-
-	static void outputGordonHtml() throws IOException{
-		FileWriter outputFile = new FileWriter(outputFileName);
-		outputFile.write(gordonHtml);
-		outputFile.close();
-	}
-
-	static void insertGordonTable() throws IOException{
-		clearHtmlTable();
-
-		String startTag = "<!--START HERE-->" + System.lineSeparator();
-		StringBuilder gordonBuilder = new StringBuilder(gordonHtml);
-		gordonBuilder.insert(gordonHtml.indexOf(startTag) + startTag.length(), gordonTable);
-		gordonHtml = gordonBuilder.toString();
-	}
-
-	static void clearHtmlTable() {
-		String startTag = "<!--START HERE-->" + System.lineSeparator();
-		String endTag = "<!--END HERE-->";
-		StringBuilder gordonBuilder = new StringBuilder(gordonHtml);
-		int startIndex = gordonBuilder.indexOf(startTag) + startTag.length();
-		int endIndex = gordonBuilder.indexOf(endTag);
-		gordonBuilder.delete(startIndex, endIndex);
-		gordonHtml = gordonBuilder.toString();
-	}
+//debug functions end HERE
 }

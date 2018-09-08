@@ -3,125 +3,149 @@
 	<link rel="stylesheet" type="text/css" href="Semantic-UI-CSS-master/semantic.min.css">
 	<script src="Semantic-UI-CSS-master//semantic.min.js"></script>
 	<style>
-		td {text-align: center !important;	}
+		td,th {
+			text-align: center !important;
+		}
+		table {
+			max-width: 90%;
+		}
+
+		.table-container {
+			display: flex;
+			justify-content: center;
+			padding: 40px;
+		}
+
 	</style>
 </head>
 <body>
-	<table class="ui celled padded table">
-		<thead>
-			<tr>
-			<th>Time</th>
-			<th>Cook</th>
-			<th>Ready</th>
-			<th>Assistants</th>
-			<th>Remarks</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>1</td>
-				<td>karekare</td>
-				<td>
-					<p>none</p>
-				</td>
-				<td>
-					<p>cook</p>
-					<p>mix</p>
-				</td>
-				<td>IT'S TIME TO DIE DRAGOOOOOOOOOOOOON</td>
-			</tr>
-		</tbody>
-	</table>
-
+<div class="ui labeled button" tabindex="0">
+	<div class="ui red button">
+		<i class="heart icon"></i> Like
+	</div>
+	<a class="ui basic red left pointing label">
+		1,048
+	</a>
+</div>
+<div class="ui labeled button" tabindex="0">
+	<div class="ui basic blue button">
+		<i class="fork icon"></i> Forks
+	</div>
+	<a class="ui basic left pointing blue label">
+		1,048
+	</a>
+</div>
+<div class="table-container">
 <!--START HERE-->
 <table class='ui celled padded table'>
 	<thead>
 		<tr>
 			<th>Time</th>
-			<th>Dish</th>
-			<th>Actions</th>
-			<th>TimeLefts</th>
+			<th>Cook</th>
+			<th>Ready</th>
+			<th>Assistants</th>
 			<th>Remarks</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td>1</td>
-			<td>adobo1 - 1</td>
+			<td>adobo1</td>
 			<td>
-				<p>cook - 9</p
-				<p>mix - 5</p
-				<p>cook - 7</p
-				<p>sauce - 6</p
-				<p>cook - 5</p
+				<p>cook</p>
+				<p>mix</p>
+				<p>cook</p>
+				<p>sauce</p>
+				<p>cook</p>
 			</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>tinola1 - 5</td>
 			<td>
-				<p>cook - 4</p
-				<p>soup - 8</p
-				<p>cook - 9</p
-				<p>decorate - 7</p
-				<p>mix - 3</p
-				<p>cook - 5</p
-			</td>
-		</tr>
-		<tr>
-			<td>3</td>
-			<td>karekare1 - 8</td>
-			<td>
-				<p>cook - 8</p
-				<p>mix - 10</p
-				<p>cook - 9</p
-				<p>churn - 10</p
-				<p>cook - 4</p
-			</td>
-		</tr>
-		<tr>
-			<td>4</td>
-			<td>tinola2 - 12</td>
-			<td>
-				<p>cook - 4</p
-				<p>soup - 8</p
-				<p>cook - 9</p
-				<p>decorate - 7</p
-				<p>mix - 3</p
-				<p>cook - 5</p
+				<p>9</p>
+				<p>5</p>
+				<p>7</p>
+				<p>6</p>
+				<p>5</p>
 			</td>
 		</tr>
 		<tr>
 			<td>5</td>
-			<td>adobo2 - 14</td>
+			<td>tinola1</td>
 			<td>
-				<p>cook - 9</p
-				<p>mix - 5</p
-				<p>cook - 7</p
-				<p>sauce - 6</p
-				<p>cook - 5</p
+				<p>cook</p>
+				<p>soup</p>
+				<p>cook</p>
+				<p>decorate</p>
+				<p>mix</p>
+				<p>cook</p>
+			</td>
+			<td>
+				<p>4</p>
+				<p>8</p>
+				<p>9</p>
+				<p>7</p>
+				<p>3</p>
+				<p>5</p>
+			</td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td>karekare1</td>
+			<td>
+				<p>cook</p>
+				<p>mix</p>
+				<p>cook</p>
+				<p>churn</p>
+				<p>cook</p>
+			</td>
+			<td>
+				<p>8</p>
+				<p>10</p>
+				<p>9</p>
+				<p>10</p>
+				<p>4</p>
+			</td>
+		</tr>
+		<tr>
+			<td>12</td>
+			<td>tinola2</td>
+			<td>
+				<p>cook</p>
+				<p>soup</p>
+				<p>cook</p>
+				<p>decorate</p>
+				<p>mix</p>
+				<p>cook</p>
+			</td>
+			<td>
+				<p>4</p>
+				<p>8</p>
+				<p>9</p>
+				<p>7</p>
+				<p>3</p>
+				<p>5</p>
+			</td>
+		</tr>
+		<tr>
+			<td>14</td>
+			<td>adobo2</td>
+			<td>
+				<p>cook</p>
+				<p>mix</p>
+				<p>cook</p>
+				<p>sauce</p>
+				<p>cook</p>
+			</td>
+			<td>
+				<p>9</p>
+				<p>5</p>
+				<p>7</p>
+				<p>6</p>
+				<p>5</p>
 			</td>
 		</tr>
 	</tbody>
 </table>
 <!--END HERE-->
-
-	<div class="ui labeled button" tabindex="0">
-		<div class="ui red button">
-			<i class="heart icon"></i> Like
-		</div>
-		<a class="ui basic red left pointing label">
-			1,048
-		</a>
-	</div>
-	<div class="ui labeled button" tabindex="0">
-		<div class="ui basic blue button">
-			<i class="fork icon"></i> Forks
-		</div>
-		<a class="ui basic left pointing blue label">
-			1,048
-		</a>
-	</div>
+</div>
 
 </body>
 </html>
