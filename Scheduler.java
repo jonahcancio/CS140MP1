@@ -7,8 +7,8 @@ public class Scheduler{
     ArrayList<Dish> AssistantQueue = new ArrayList<Dish>();
     ArrayList<String> RemarksQueue = new ArrayList<String>();
 
-    public Scheduler(int currentTime){
-        time = currentTime;
+    public Scheduler(){
+        time = 0;
     }
 
     public Dish whatIsCookNext (Dish dishBeingCooked){
