@@ -7,15 +7,7 @@ import java.lang.StringBuilder;
 public class CrockPot {
 	String outputFileName;
 	String taskFileName;
-	String taskListDemo = "adobo 1\n"
-		+ "tinola 5\n"
-		+ "karekare 8\n"
-		+ "adobo 14\n";
-	String recipeDemo = "cook 30\n"
-		+ "mix 5\n"
-		+ "cook 30\n"
-		+ "sauce 7\n"
-		+ "cook 10\n";
+
 	ArrayList<Dish> gordonQueue;
 	HashMap<String, Integer> gordonMap;
 	String gordonTable;
@@ -42,7 +34,7 @@ public class CrockPot {
 
 	}
 
-
+	//reads tasklist and dish texts and initializes gordonQueue with all the Dishes and Actions, CALL THIS AT THE START of program
 	public void initGordonQueue() throws IOException {
 		FileReader taskFile = new FileReader(taskFileName);
 		BufferedReader taskReader = new BufferedReader(taskFile);
@@ -72,10 +64,14 @@ public class CrockPot {
 		taskFile.close();
 	}
 
+//TABLE CREATION function start HERE
+
+	//reset gordonTable string to nothing
 	public void resetGordonTable() {
 		gordonTable = "";
 	}
 
+	//append beginning table html tags to gordonTable string, ALWAYS CALL BEFORE the other gordonTable methods
 	public void beginGordonTable() {
 		gordonTable += "<table class='ui celled padded table'>" + System.lineSeparator();
 		gordonTable += "\t<thead>" + System.lineSeparator()
@@ -90,19 +86,23 @@ public class CrockPot {
 		gordonTable += "\t<tbody>" + System.lineSeparator();
 	}
 
+	//append ending table html tags to gordonString, ALWAYS CALL AFTER the other gordonTable methods
 	public void endGordonTable() {
 		gordonTable += "\t</tbody>" + System.lineSeparator();
 		gordonTable += "</table>" + System.lineSeparator();
 	}
 
+	//append beginning row html tags to gordonString, ALWAYS CALL BEFORE every row
 	public void beginGordonRow() {
 		gordonTable += "\t\t<tr>" +  System.lineSeparator();
 	}
 
+	//append ending row html tags to gordonString, ALWAYS CALL AFTER every row
 	public void endGordonRow() {
 		gordonTable += "\t\t</tr>" +  System.lineSeparator();
 	}
 
+	//append html column to gordongString with content specified in String content
 	public void addGordonColumn(String content) {
 		String startTag = "";
 		String endTag = "";
@@ -116,8 +116,10 @@ public class CrockPot {
 		gordonTable += startTag + content + endTag + System.lineSeparator();
 	}
 
-//html reading and writing functions begin HERE
+//TABLE CREATION functions end HERE
+//HTML reading and writing functions begin HERE
 
+	//edits the output html file, inserts the gordonTable string between <!--START HERE--> and <!--END HERE-->
 	public void htmlizeGordonTable() throws IOException{
 		initGordonHtml();
 		clearHtmlTable();
@@ -125,6 +127,7 @@ public class CrockPot {
 		outputGordonHtml();
 	}
 
+	//edits the output html file, removes all text between <!--START HERE--> and <!--END HERE-->
 	public void washOutGordonFromHtml() throws IOException{
 		initGordonHtml();
 		clearHtmlTable();
@@ -165,9 +168,19 @@ public class CrockPot {
 		outputFile.write(gordonHtml);
 		outputFile.close();
 	}
-//html reading and writing functions end HERE
+//HTML reading and writing functions end HERE
 
-//debuf functions begin HERE
+//DEBUGGER functions begin HERE
+	String taskListDemo = "adobo 1\n"
+		+ "tinola 5\n"
+		+ "karekare 8\n"
+		+ "adobo 14\n";
+	String recipeDemo = "cook 30\n"
+		+ "mix 5\n"
+		+ "cook 30\n"
+		+ "sauce 7\n"
+		+ "cook 10\n";
+
 	void stringDemoLoop() {
 		for (String taskLine : taskListDemo.split("\\n")) {
 			String dishName = taskLine.split("\\s")[0];//get 1st word of taskLine
@@ -219,5 +232,5 @@ public class CrockPot {
 		endGordonTable();
 	}
 
-//debug functions end HERE
+//DEBUGGER functions end HERE
 }
