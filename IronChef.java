@@ -7,33 +7,68 @@ public class IronChef{
         sched.crockpot.consoleLogGordonQueue();
         sched.crockpot.resetGordonTable();
 
-        String readyString ="";
-        String cookString ="";
-        String assistantString="";
-        String remarksString="";
+        String readyString ="none";
+        String cookString = "none";
+        String assistantString="none";
+        String remarksString="none";
+
+        boolean isDone = false;
+
         //Create column labels
         sched.crockpot.beginGordonTable();
 
+        int i = 1;
         while(true){
+            //initialize string
+            readyString ="";
+            cookString = "";
+            assistantString="";
+            remarksString="";
             sched.crockpot.beginGordonRow();
 
-            if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
-                break;
-            }
+
 
             sched.incrementTime();
 
 
             sched.readyUpdate();//Updates Ready Queue
 
-            readyString = "";
-            for(Dish ready : sched.ReadyQueue){
-                readyString = readyString + (ready.name + "(" + ready.aQueue.get(0).name + "), ");
+
+            sched.assistantUpdate();
+
+            sched.cookUpdate();
+
+            if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
+                break;
+            }
+
+            //Debug
+            // System.out.print(sched.crockpot.gordonQueue.isEmpty());
+            // System.out.print(sched.AssistantQueue.isEmpty());
+            // System.out.print(sched.dishBeingCooked == null);
+            // if(sched.dishBeingCooked != null){
+            // System.out.print(sched.dishBeingCooked.aQueue.get(sched.dishBeingCooked.currentActionIndex).timeLeft);
+            // }
+            // System.out.print(i);
+            // i++;
+            // System.out.print("\n");
+
+            //String updates
+            for(Dish assist: sched.AssistantQueue){
+                assistantString = assistantString + assist.name + "(" + assist.aQueue.get(assist.currentActionIndex).name + "=" + assist.aQueue.get(assist.currentActionIndex).timeLeft + "), ";
+            }
+
+            if(sched.dishBeingCooked != null && (sched.dishBeingCooked.currentActionIndex < sched.dishBeingCooked.aQueue.size())){
+                cookString = sched.dishBeingCooked.name + ("(" + sched.dishBeingCooked.aQueue.get(sched.dishBeingCooked.currentActionIndex).name + "=" + Integer.toString(sched.dishBeingCooked.aQueue.get(sched.dishBeingCooked.currentActionIndex).timeLeft) + ")");
+            }else{
+                cookString = "none";
             }
 
 
-            sched.assistantUpdate();
-            sched.cookUpdate();
+            readyString = "";
+            for(Dish ready : sched.ReadyQueue){
+                readyString = readyString + (ready.name + "(" + ready.aQueue.get(ready.currentActionIndex).name + "=" + ready.aQueue.get(ready.currentActionIndex).timeLeft + "), ");
+            }
 
             sched.crockpot.addGordonColumn(Integer.toString(sched.time));//update time column
             sched.crockpot.addGordonColumn(cookString);//update cook column
@@ -42,9 +77,8 @@ public class IronChef{
             sched.crockpot.addGordonColumn(remarksString);//update remarks column
 
             sched.crockpot.endGordonRow();
-
-            sched.crockpot.htmlizeGordonTable();
         }
+        sched.crockpot.htmlizeGordonTable();
 
     }
 }

@@ -1,4 +1,4 @@
-cook 8
+cut 8
 mix 10
 cook 9
 churn 10
