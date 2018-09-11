@@ -6,9 +6,13 @@ public class Scheduler{
     ArrayList<Dish> ReadyQueue = new ArrayList<Dish>();
     ArrayList<Dish> AssistantQueue = new ArrayList<Dish>();
     ArrayList<String> RemarksQueue = new ArrayList<String>();
+    ArrayList<Integer> IndexToBeRemoved= new ArrayList<Integer>();
+
+    CrockPot crockpot;
 
     public Scheduler(){
         time = 0;
+        crockpot = new CrockPot();
     }
 
     public Dish whatIsCookNext (Dish dishBeingCooked){
@@ -46,29 +50,38 @@ public class Scheduler{
     }
 
     public void cookUpdate(){//updates ReadyQueue and current dish at every time increment
-        if(dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft == 0){//if dish is done cooking, move onto the next task
-            dishBeingCooked.currentActionIndex += 1;
+        if(dishBeingCooked == null){
+            dishBeingCooked = ReadyQueue.get(0);
+            dishBeingCooked.currentActionIndex = 0;
+            ReadyQueue.remove(0);
+        }else{
+            if(dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft == 0 ){//if dish is done cooking, move onto the next task
+                dishBeingCooked.currentActionIndex += 1;
 
-            while(!dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).equals("cook") && ReadyQueue.get(0) != null){//loop until we get a dish that needs cooking
-                dishBeingCooked = whatIsCookNext(dishBeingCooked);
-                if(!dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).equals("cook")){//if dish doesn't need cooking, move it to assistant Queue
-                    AssistantQueue.add(dishBeingCooked);
-                    dishBeingCooked = null;
-                    ReadyQueue.remove(0);
+                while(!dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).name.equals("cook") && ReadyQueue.get(0) != null){//loop until we get a dish that needs cooking
+                    dishBeingCooked = whatIsCookNext(dishBeingCooked);
+                    if(!dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).name.equals("cook")){//if dish doesn't need cooking, move it to assistant Queue
+                        AssistantQueue.add(dishBeingCooked);
+                        dishBeingCooked = null;
+                        ReadyQueue.remove(0);
+                    }
                 }
+            }else{//if not done cooking, subtract 1 from time
+                dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft--;
             }
-
-        }else{//if not done cooking, subtract 1 from time
-            dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft--;
         }
     }
 
     public void readyUpdate(){//adds additional dishes to the ReadyQueue based on the tasklist
-        for(Dish dish: CrockPot.gordonQueue){
+        int i = 1;
+        for(Dish dish: crockpot.gordonQueue){
             if(time == dish.startTime){
                 ReadyQueue.add(dish);
-                CrockPot.gordonQueue.remove(dish);
+                i++;
             }
+        }
+        for(;i==0;i--){//for every dish added to readyqueue, remove from gordonqueue
+            crockpot.gordonQueue.remove(0);
         }
     }
 }

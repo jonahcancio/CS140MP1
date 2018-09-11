@@ -26,11 +26,12 @@ public class CrockPot {
 		CrockPot myself = new CrockPot();
 
 		myself.initGordonQueue();
-		myself.initGordonTable();
-		System.out.println(myself.gordonTable);
-
-		myself.htmlizeGordonTable();
-		// myself.washOutGordonFromHtml();
+		myself.consoleLogGordonQueue();
+		// myself.initGordonTable();
+		// System.out.println(myself.gordonTable);
+		//
+		// myself.htmlizeGordonTable();
+		// // myself.washOutGordonFromHtml();
 
 	}
 
