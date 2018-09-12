@@ -6,6 +6,7 @@ import java.lang.StringBuilder;
 
 public class CrockPot {
 	String outputFileName;
+	String templateFileName;
 	String taskFileName;
 
 	ArrayList<Dish> gordonQueue;
@@ -14,7 +15,8 @@ public class CrockPot {
 	String gordonHtml;
 
 	public CrockPot() {
-		outputFileName = "JandelOutput.html";
+		templateFileName = "JandelOutput.html";
+		outputFileName = "output.html";
 		taskFileName = "recipes/Tasklist.txt";
 		gordonQueue = new ArrayList<Dish>();
 		gordonMap = new HashMap<String, Integer>();
@@ -22,8 +24,14 @@ public class CrockPot {
 		gordonHtml = "";
 	}
 
+	public CrockPot(String template, String output) {
+		this();
+		templateFileName = template;
+		outputFileName = output;
+	}
+
 	public static void main(String args[]) throws IOException{
-		CrockPot myself = new CrockPot();
+		CrockPot myself = new CrockPot("JandelOutput.html", "bazinga.html");
 
 		myself.initGordonQueue();
 		myself.consoleLogGordonQueue();
@@ -74,7 +82,7 @@ public class CrockPot {
 
 	//append beginning table html tags to gordonTable string, ALWAYS CALL BEFORE the other gordonTable methods
 	public void beginGordonTable() {
-		gordonTable += "<table class='ui celled padded table'>" + System.lineSeparator();
+		gordonTable += "<table class='ui inverted red table'>" + System.lineSeparator();
 		gordonTable += "\t<thead>" + System.lineSeparator()
 			+ "\t\t<tr>" +  System.lineSeparator()
 			+ "\t\t\t<th>Time</th>" +  System.lineSeparator()
@@ -136,15 +144,15 @@ public class CrockPot {
 	}
 
 	void initGordonHtml() throws IOException {
-		FileReader outputFile = new FileReader(outputFileName);
-		BufferedReader outputReader = new BufferedReader(outputFile);
+		FileReader templateFile = new FileReader(templateFileName);
+		BufferedReader templateReader = new BufferedReader(templateFile);
 		String htmlLine;
 		gordonHtml = "";
-		while ( (htmlLine = outputReader.readLine() ) != null) {
+		while ( (htmlLine = templateReader.readLine() ) != null) {
 			gordonHtml += htmlLine + System.lineSeparator();
 		}
-		outputReader.close();
-		outputFile.close();
+		templateReader.close();
+		templateFile.close();
 	}
 
 	void clearHtmlTable() {
