@@ -31,12 +31,13 @@ public class IronChef{
             sched.incrementTime();
 
 
-            sched.readyUpdate();//Updates Ready Queue
+            remarksString = remarksString + sched.readyUpdate();//Updates Ready Queue
 
 
-            sched.assistantUpdate();
+            remarksString = remarksString + sched.assistantUpdate();
 
-            sched.cookUpdate();
+            remarksString = remarksString + sched.cookUpdate();
+
 
             if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
                 break;
@@ -46,6 +47,7 @@ public class IronChef{
             // System.out.print(sched.crockpot.gordonQueue.isEmpty());
             // System.out.print(sched.AssistantQueue.isEmpty());
             // System.out.print(sched.dishBeingCooked == null);
+            //System.out.print(remarksString + "\n");
             // if(sched.dishBeingCooked != null){
             // System.out.print(sched.dishBeingCooked.aQueue.get(sched.dishBeingCooked.currentActionIndex).timeLeft);
             // }
