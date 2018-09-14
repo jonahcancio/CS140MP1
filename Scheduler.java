@@ -41,11 +41,13 @@ public class Scheduler{
             if(dish.aQueue.get(dish.currentActionIndex).timeLeft == 1){
                 assistantString = assistantString + dish.name + " " + dish.aQueue.get(dish.currentActionIndex).name + " done, ";
                 dish.currentActionIndex++;
-                if(dish.currentActionIndex > dish.aQueue.size()){//if no more actions left, remove from queue forever
-
+                if(dish.currentActionIndex >= dish.aQueue.size()){//if no more actions left, remove from queue forever
+                    AssistantQueue.remove(i);
+                    assistantString = assistantString + dish.name + " " + " dish done, ";
+                }else{
+                    ReadyQueue.add(dish);
+                    AssistantQueue.remove(i);
                 }
-                ReadyQueue.add(dish);
-                AssistantQueue.remove(i);
             }else{
             i++;
             }
@@ -74,7 +76,7 @@ public class Scheduler{
         if(dishBeingCooked != null && dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft == 1){//if dish is done cooking
             cookString = dishBeingCooked.name + " cook done, ";
             dishBeingCooked.currentActionIndex++;
-            if(dishBeingCooked.currentActionIndex < dishBeingCooked.aQueue.size() /*&& !dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).name.equals("cook")*/){
+            if(dishBeingCooked.currentActionIndex < dishBeingCooked.aQueue.size()){
                 AssistantQueue.add(dishBeingCooked);
             }
             dishBeingCooked = null;
