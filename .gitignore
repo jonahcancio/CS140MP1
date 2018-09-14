@@ -3,4 +3,4 @@
 
 #ignore html files except Jandel
 *.html
-!JandelOutput.html
+!template.html

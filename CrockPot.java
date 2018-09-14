@@ -8,6 +8,7 @@ public class CrockPot {
 	String outputFileName;
 	String templateFileName;
 	String taskFileName;
+	String recipesDirectory;
 
 	ArrayList<Dish> gordonQueue;
 	HashMap<String, Integer> gordonMap;
@@ -15,9 +16,10 @@ public class CrockPot {
 	String gordonHtml;
 
 	public CrockPot() {
-		templateFileName = "JandelOutput.html";
+		templateFileName = "template.html";
 		outputFileName = "output.html";
-		taskFileName = "recipes/Tasklist.txt";
+		taskFileName = "tasklist.txt";
+		recipesDirectory = "recipes";
 		gordonQueue = new ArrayList<Dish>();
 		gordonMap = new HashMap<String, Integer>();
 		gordonTable = "";
@@ -45,7 +47,7 @@ public class CrockPot {
 
 	//reads tasklist and dish texts and initializes gordonQueue with all the Dishes and Actions, CALL THIS AT THE START of program
 	public void initGordonQueue() throws IOException {
-		FileReader taskFile = new FileReader(taskFileName);
+		FileReader taskFile = new FileReader(recipesDirectory + "/" + taskFileName);
 		BufferedReader taskReader = new BufferedReader(taskFile);
 
 		String taskLine;
@@ -57,7 +59,7 @@ public class CrockPot {
 			newDish.startTime = Integer.parseInt(taskLine.split("\\s")[1]);//init startTime of dish with 2nd word of taskLine
 
 			newDish.aQueue = new ArrayList<Action>();//init dish aQueue
-			FileReader dishFile = new FileReader("recipes/" + dishName + ".txt");
+			FileReader dishFile = new FileReader(recipesDirectory + "/" + dishName + ".txt");
 			BufferedReader dishReader = new BufferedReader(dishFile);
 			String actLine;
 			while ((actLine = dishReader.readLine()) != null) {//add each action in recipe to aQueue of dish
@@ -82,7 +84,7 @@ public class CrockPot {
 
 	//append beginning table html tags to gordonTable string, ALWAYS CALL BEFORE the other gordonTable methods
 	public void beginGordonTable() {
-		gordonTable += "<table class='ui inverted red table'>" + System.lineSeparator();
+		gordonTable += "<table class='ui celled padded striped red table'>" + System.lineSeparator();
 		gordonTable += "\t<thead>" + System.lineSeparator()
 			+ "\t\t<tr>" +  System.lineSeparator()
 			+ "\t\t\t<th>Time</th>" +  System.lineSeparator()
