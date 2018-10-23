@@ -15,21 +15,10 @@ public class PRIORITY extends Scheduler{
       for(int i = 0; i<dishList.size(); i++){
         Dish dish = dishList.get(i);
 
-        if(ref.name.charAt(0) > dish.name.charAt(0)){//If we find a "smaller" dish
-          ref = dish;//make that dish the new reference dish
+        if(ref.name.compareTo(dish.name) > 0){//If we find a "smaller" string
           key = i;
-        }else if(ref.name.charAt(0) == dish.name.charAt(0)){//If we find a dish with same first letters
-          int j = 0;
-          while(ref.name.charAt(j) == dish.name.charAt(j)){//Go through all the letters to find out which of them is smaller
-            if(ref.name.charAt(j) == 0){
-              break;
-            }else if(dish.name.charAt(j) == 0 || ref.name.charAt(j) > dish.name.charAt(j)){
-              ref = dish;
-              key = i;
-              break;
-            }
-            j++;
-          }
+          ref = dish;
+        }
 
         }
       }
