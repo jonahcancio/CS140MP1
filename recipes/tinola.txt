@@ -1,6 +1,0 @@
-cook 4
-soup 8
-cook 9
-decorate 7
-mix 3
-cook 5

@@ -8,6 +8,7 @@ public class CrockPot {
 	String outputFileName;
 	String templateFileName;
 	String taskFileName;
+	String schedulingScheme;
 	String recipesDirectory;
 
 	ArrayList<Dish> gordonQueue;
@@ -51,6 +52,8 @@ public class CrockPot {
 		BufferedReader taskReader = new BufferedReader(taskFile);
 
 		String taskLine;
+		schedulingScheme = taskReader.readLine();
+		//System.out.println(schedulingScheme);
 		while ((taskLine = taskReader.readLine()) != null) {
 			String dishName = taskLine.split("\\s")[0];//get 1st word of taskLine
 			gordonMap.put(dishName, gordonMap.containsKey(dishName)? gordonMap.get(dishName)+1 : 1);//adds 1 to map value if already in key map, else adds to key map with value of 1
