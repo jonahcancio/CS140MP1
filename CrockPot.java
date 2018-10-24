@@ -19,7 +19,7 @@ public class CrockPot {
 		templateFileName = "template.html";
 		outputFileName = "output.html";
 		taskFileName = "tasklist.txt";
-		recipesDirectory = ".";
+		recipesDirectory = "recipes";
 		gordonQueue = new ArrayList<Dish>();
 		gordonMap = new HashMap<String, Integer>();
 		gordonTable = "";

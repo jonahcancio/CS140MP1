@@ -2,7 +2,7 @@ import java.io.IOException;
 
 public class IronChef{
     public static void main(String args[]) throws IOException{
-        Scheduler sched = new FCFS();
+        Scheduler sched = new SJF();
         sched.crockpot.initGordonQueue();
         //sched.crockpot.consoleLogGordonQueue();
         sched.crockpot.resetGordonTable();
