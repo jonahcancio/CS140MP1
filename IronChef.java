@@ -3,32 +3,32 @@ import java.io.*;
 
 public class IronChef{
     public static void main(String args[]) throws IOException {
-        CrockPot crockpot = new CrockPot();
+        CrockPot crockpot = new CrockPot("recipes"); //initialize crockpot to read tasklist from recipes directory
+
         //Read desired scheduling scheme
-        FileReader taskFile = new FileReader("recipes/tasklist.txt");
-        BufferedReader taskReader = new BufferedReader(taskFile);
-
-        String schedulingScheme = "";
-        schedulingScheme = taskReader.readLine();
-
-        taskReader.close();
-        taskFile.close();
+        crockpot.initGordonQueue(); //DO THIS FIRST BEFORE INITIALIZING SCHEDULER; IT SETS crockpot.schedulingScheme accordingly
+        //crockpot.consoleLogGordonQueue();
+        crockpot.resetGordonTable();
 
         //Select appropriate scheduling scheme
         Scheduler sched = null;
-        if(schedulingScheme.equals("FCFS")) {
+        if(crockpot.schedulingScheme.equals("FCFS")) {
             sched = new FCFS(crockpot);
-        } else if(schedulingScheme.equals("PRIORITY")) {
+        } else if(crockpot.schedulingScheme.equals("PRIORITY")) {
             sched = new PRIORITY(crockpot);
-        } else if(schedulingScheme.equals("SJF")) {
+        } else if(crockpot.schedulingScheme.equals("SJF")) {
             sched = new SJF(crockpot);
-        } else if(schedulingScheme.equals("RR")) {
-            sched = new RoundRobin(crockpot, 4, 1);
+        } else { //check for round robin
+            String rr[] = crockpot.schedulingScheme.split(" ");
+            if (rr.length == 3) { //see if 3 arguments given
+                int q = Integer.parseInt(rr[1]);
+                int cs = Integer.parseInt(rr[2]);
+                sched = new RoundRobin(crockpot, q, cs);
+            } else { //terminate on error
+                System.err.println("Invalid input :(");
+                System.exit(1);
+            }
         }
-
-        sched.crockpot.initGordonQueue();
-        //sched.crockpot.consoleLogGordonQueue();
-        sched.crockpot.resetGordonTable();
 
         String readyString ="none";
         String cookString = "none";
@@ -38,7 +38,7 @@ public class IronChef{
         boolean isDone = false;
 
         //Create column labels
-        sched.crockpot.beginGordonTable();
+        crockpot.beginGordonTable();
         int i = 1;
         while(true){
             //initialize string
@@ -46,7 +46,7 @@ public class IronChef{
             cookString = "";
             assistantString="";
             remarksString="";
-            sched.crockpot.beginGordonRow();
+            crockpot.beginGordonRow();
 
 
 
@@ -63,7 +63,7 @@ public class IronChef{
                 remarksString = "none";
             }
             //Debug
-            // System.out.print(sched.crockpot.gordonQueue.isEmpty());
+            // System.out.print(crockpot.gordonQueue.isEmpty());
             // System.out.print(sched.AssistantQueue.isEmpty());
             // System.out.print(sched.dishBeingCooked == null);
             //System.out.print(remarksString + "\n");
@@ -101,22 +101,22 @@ public class IronChef{
             }
 
 
-            sched.crockpot.addGordonColumn(Integer.toString(sched.time));//update time column
-            sched.crockpot.addGordonColumn(cookString);//update cook column
-            sched.crockpot.addGordonColumn(readyString);//update ReadyColumn
-            sched.crockpot.addGordonColumn(assistantString);//update assistant column
-            sched.crockpot.addGordonColumn(remarksString);//update remarks column
+            crockpot.addGordonColumn(Integer.toString(sched.time));//update time column
+            crockpot.addGordonColumn(cookString);//update cook column
+            crockpot.addGordonColumn(readyString);//update ReadyColumn
+            crockpot.addGordonColumn(assistantString);//update assistant column
+            crockpot.addGordonColumn(remarksString);//update remarks column
 
-            sched.crockpot.endGordonRow();
+            crockpot.endGordonRow();
 
-            if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.ReadyQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
+            if((crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.ReadyQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
                 break;
             }
 
-            sched.crockpot.htmlizeGordonTable();
+            crockpot.htmlizeGordonTable();
         }
-        sched.crockpot.endGordonTable();
-        sched.crockpot.htmlizeGordonTable();
+        crockpot.endGordonTable();
+        crockpot.htmlizeGordonTable();
 
     }
 }

@@ -33,6 +33,18 @@ public class CrockPot {
 		outputFileName = output;
 	}
 
+	public CrockPot(String recipes, String template, String output) {
+		this();
+		templateFileName = template;
+		outputFileName = output;
+		recipesDirectory = recipes;
+	}
+
+	public CrockPot(String recipes) {
+		this();
+		recipesDirectory = recipes;
+	}
+
 	public static void main(String args[]) throws IOException{
 		CrockPot myself = new CrockPot("JandelOutput.html", "bazinga.html");
 
