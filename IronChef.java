@@ -1,8 +1,26 @@
 import java.io.IOException;
+import java.io.*;
 
 public class IronChef{
     public static void main(String args[]) throws IOException{
-        Scheduler sched = new SJF();
+      //Read desired scheduling scheme
+        FileReader taskFile = new FileReader("./tasklist.txt");
+        BufferedReader taskReader = new BufferedReader(taskFile);
+
+        String schedulingScheme = "";
+        schedulingScheme = taskReader.readLine();
+
+        taskReader.close();
+        taskFile.close();
+
+        //Select appropriate scheduling scheme
+        Scheduler sched = null;
+        if(schedulingScheme.equals("FCFS")){
+          sched = new FCFS();
+        }else if(schedulingScheme.equals("PRIORITY")){
+          sched = new PRIORITY();
+        }
+
         sched.crockpot.initGordonQueue();
         //sched.crockpot.consoleLogGordonQueue();
         sched.crockpot.resetGordonTable();
@@ -56,7 +74,10 @@ public class IronChef{
                 assistantString = "none";
             }else{
                 for(Dish assist: sched.AssistantQueue){
-                    assistantString = assistantString + assist.name + "(" + assist.aQueue.get(assist.currentActionIndex).name + "=" + assist.aQueue.get(assist.currentActionIndex).timeLeft + "), ";
+                    //System.out.println(assist.currentActionIndex);
+                    if(!(assist.currentActionIndex >= assist.aQueue.size())){
+                      assistantString = assistantString + assist.name + "(" + assist.aQueue.get(assist.currentActionIndex).name + "=" + assist.aQueue.get(assist.currentActionIndex).timeLeft + "), ";
+                    }
                 }
             }
 
