@@ -3,6 +3,10 @@ import java.util.Comparator;
 
 public class SJF extends Scheduler{
 
+	public SJF(CrockPot crockpot) {
+		super(crockpot);
+	}
+
 	@Override
     public Dish whatIsCookNext(Dish dishBeingCooked){
         Dish nextDish = ReadyQueue.get(0); //ReadyQueue should already be sorted; first dish will have shortest job so take it

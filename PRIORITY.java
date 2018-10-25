@@ -2,6 +2,10 @@ import java.util.*;
 
 public class PRIORITY extends Scheduler{
 
+    public PRIORITY(CrockPot crockpot) {
+        super(crockpot);
+    }
+
   ArrayList<Dish> alphabetSortDishes(ArrayList<Dish> dishList){//sort dishes in list alphabetically
     //ArrayList<Dish> sortedDishList = new ArrayList<Dish>();
     if(!dishList.isEmpty()){

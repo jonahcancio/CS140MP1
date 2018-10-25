@@ -3,7 +3,7 @@ import java.io.*;
 
 public class IronChef{
     public static void main(String args[]) throws IOException {
-
+        CrockPot crockpot = new CrockPot();
         //Read desired scheduling scheme
         FileReader taskFile = new FileReader("recipes/tasklist.txt");
         BufferedReader taskReader = new BufferedReader(taskFile);
@@ -17,13 +17,13 @@ public class IronChef{
         //Select appropriate scheduling scheme
         Scheduler sched = null;
         if(schedulingScheme.equals("FCFS")) {
-            sched = new FCFS();
+            sched = new FCFS(crockpot);
         } else if(schedulingScheme.equals("PRIORITY")) {
-            sched = new PRIORITY();
+            sched = new PRIORITY(crockpot);
         } else if(schedulingScheme.equals("SJF")) {
-            sched = new SJF();
+            sched = new SJF(crockpot);
         } else if(schedulingScheme.equals("RR")) {
-            sched = new RoundRobin(4, 1);
+            sched = new RoundRobin(crockpot, 4, 1);
         }
 
         sched.crockpot.initGordonQueue();

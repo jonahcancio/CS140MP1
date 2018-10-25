@@ -10,9 +10,9 @@ public class Scheduler{
 
     CrockPot crockpot;
 
-    public Scheduler(){
+    public Scheduler(CrockPot crockpot){
         time = 0;
-        crockpot = new CrockPot();
+        this.crockpot = crockpot;
     }
 
     public Dish whatIsCookNext (Dish dishBeingCooked){

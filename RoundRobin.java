@@ -7,8 +7,8 @@ public class RoundRobin extends Scheduler{
 	boolean isContextSwitching; //will be true while context switch ongoing
 	Dish dishBuffer; //Buffer
 
-	public RoundRobin(int q, int cs) {
-		super();
+	public RoundRobin(CrockPot crockpot, int q, int cs) {
+		super(crockpot);
 		this.qMax = q;
 		this.csMax = cs;
 		this.qTimeLeft = q;
