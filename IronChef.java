@@ -5,7 +5,7 @@ public class IronChef{
     public static void main(String args[]) throws IOException {
 
         //Read desired scheduling scheme
-        FileReader taskFile = new FileReader("./tasklist.txt");
+        FileReader taskFile = new FileReader("recipes/tasklist.txt");
         BufferedReader taskReader = new BufferedReader(taskFile);
 
         String schedulingScheme = "";

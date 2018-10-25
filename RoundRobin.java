@@ -1,11 +1,11 @@
 public class RoundRobin extends Scheduler{
 
-	int qMax;
-	int csMax;
-	int csTimeLeft;
-	int qTimeLeft;
-	boolean isContextSwitching;
-	Dish dishMustRunNext;
+	int qMax; //the q from input file
+	int csMax; //the cs from input file
+	int csTimeLeft; //used to time context switch
+	int qTimeLeft; //used to time cook quantums
+	boolean isContextSwitching; //will be true while context switch ongoing
+	Dish dishBuffer; //Buffer
 
 	public RoundRobin(int q, int cs) {
 		super();
@@ -15,40 +15,35 @@ public class RoundRobin extends Scheduler{
 		isContextSwitching = false;
 	}
 
-	private void startContextSwitch() {
-		isContextSwitching = true;
-		csTimeLeft = csMax;
-
-	}
-
+	//called whenever context switching should start
 	private void stopContextSwitch() {
 		isContextSwitching = false;
 		qTimeLeft = qMax;
 	}
 
-    public Dish whatIsCookNext(){
-        Dish nextDish = ReadyQueue.get(0);//first come first served basis
-        //System.out.print(nextDish.name);
-        // ReadyQueue.remove(0);
-        return nextDish;
-    }
+	//called whenever context switching should end
+	private void startContextSwitch() {
+		isContextSwitching = true;
+		csTimeLeft = csMax;
+		dishBuffer = whatIsCookNext();
+	}
+
+	//returns first item in readyQueue if it exists else returns null
+	private Dish whatIsCookNext() {
+		if (ReadyQueue.isEmpty()) {
+			return null;
+		} else {
+			return ReadyQueue.get(0);
+		}
+	}
 
 	@Override
 	public String cookUpdate(){//updates ReadyQueue and current dish at every time increment
         String cookString = "";
 		Action cookAction;
-		if (isContextSwitching) {
-			csTimeLeft--;
-			if(csTimeLeft <= 0) {
-				dishMustRunNext = null;
-				if(!ReadyQueue.isEmpty()) {
-					dishMustRunNext = ReadyQueue.get(0);
-				}
-				stopContextSwitch();
-			}
-		}
 
-		if(dishBeingCooked != null) {
+
+		if(dishBeingCooked != null) { //if a dish is current being cooked
 			cookAction = dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex);
 			cookAction.timeLeft--;
 			qTimeLeft--;
@@ -66,18 +61,21 @@ public class RoundRobin extends Scheduler{
 				dishBeingCooked = null;
 				startContextSwitch();
 			}
+		}else if(isContextSwitching) { //if no dish is cooking because context switch ongoing
+			csTimeLeft--;
+			if(csTimeLeft <= 0) { //if context switch time has ended
+				stopContextSwitch();
+			}
 		}
 
-		if (dishMustRunNext == null && !ReadyQueue.isEmpty()) {
-			dishMustRunNext = ReadyQueue.get(0);
+		if (dishBuffer == null) { //if program just started and no dish in buffer yet
+			dishBuffer = whatIsCookNext();
 		}
 
-		if(dishBeingCooked == null) {
-			if(!isContextSwitching) {
-				dishBeingCooked = dishMustRunNext;
-				if(!ReadyQueue.isEmpty()) {
-					ReadyQueue.remove(0);
-				}
+		if(dishBeingCooked == null && !isContextSwitching && dishBuffer != null) { //if no dish is being cooked, no longer context switching, and next dish available in buffer
+			dishBeingCooked = dishBuffer;
+			if(!ReadyQueue.isEmpty()) { //remove dish in dishBuffer from queue
+				ReadyQueue.remove(dishBuffer);
 			}
 		}
 
