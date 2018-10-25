@@ -2,7 +2,7 @@ import java.io.IOException;
 
 public class IronChef{
     public static void main(String args[]) throws IOException{
-        Scheduler sched = new SJF();
+        Scheduler sched = new RoundRobin(5, 1);
         sched.crockpot.initGordonQueue();
         //sched.crockpot.consoleLogGordonQueue();
         sched.crockpot.resetGordonTable();
@@ -83,7 +83,7 @@ public class IronChef{
 
             sched.crockpot.endGordonRow();
 
-            if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
+            if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.ReadyQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
                 break;
             }
 
