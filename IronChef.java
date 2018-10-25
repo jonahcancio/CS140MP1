@@ -3,6 +3,7 @@ import java.io.*;
 
 public class IronChef{
     public static void main(String args[]) throws IOException{
+
       //Read desired scheduling scheme
         FileReader taskFile = new FileReader("./tasklist.txt");
         BufferedReader taskReader = new BufferedReader(taskFile);
@@ -104,7 +105,7 @@ public class IronChef{
 
             sched.crockpot.endGordonRow();
 
-            if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
+            if((sched.crockpot.gordonQueue.isEmpty()) && (sched.AssistantQueue.isEmpty()) && (sched.ReadyQueue.isEmpty()) && (sched.dishBeingCooked == null)){//if no more dishes in tasklist, no more dishes being assisted and cooked, finish
                 break;
             }
 
