@@ -98,8 +98,9 @@ public class CrockPot {
 	}
 
 	//append beginning table html tags to gordonTable string, ALWAYS CALL BEFORE the other gordonTable methods
-	public void beginGordonTable() {
+	public void beginGordonTable(String s) {
 		gordonTable += "<table class='ui celled padded striped red table'>" + System.lineSeparator();
+	  gordonTable += "<thead><th align = \"center\" colspan = \"5\"><h1>Algorithm: " + s + "</h1></th></thead>" + System.lineSeparator();
 		gordonTable += "\t<thead>" + System.lineSeparator()
 			+ "\t\t<tr>" +  System.lineSeparator()
 			+ "\t\t\t<th>Time</th>" +  System.lineSeparator()
@@ -238,7 +239,7 @@ public class CrockPot {
 
 	void initGordonTable() {
 		resetGordonTable();
-		beginGordonTable();
+		beginGordonTable("asfd");
 		int i = 0;
 		for (Dish dish : gordonQueue){
 			beginGordonRow();

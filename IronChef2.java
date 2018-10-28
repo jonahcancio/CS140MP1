@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.io.*;
 
-public class IronChef{
+public class IronChef2{
     public static void main(String args[]) throws IOException {
         CrockPot crockpot = new CrockPot("recipes"); //initialize crockpot to read tasklist from recipes directory
 
@@ -37,8 +37,25 @@ public class IronChef{
 
         boolean isDone = false;
 
+
+        if(crockpot.schedulingScheme.equals("FCFS")) {
+            crockpot.beginGordonTable(crockpot.schedulingScheme);
+        } else if(crockpot.schedulingScheme.equals("PRIORITY")) {
+            crockpot.beginGordonTable(crockpot.schedulingScheme);
+        } else if(crockpot.schedulingScheme.equals("SJF")) {
+            crockpot.beginGordonTable(crockpot.schedulingScheme);
+        } else { //check for round robin
+            String rr[] = crockpot.schedulingScheme.split(" ");
+            if (rr.length == 3) { //see if 3 arguments given
+                crockpot.beginGordonTable("RR (quantum = " + rr[1] + ", context switch = " + rr[2] + ")");
+            } else { //terminate on error
+                System.err.println("Invalid input :(");
+                System.exit(1);
+            }
+        }
+
         //Create column labels
-        crockpot.beginGordonTable();
+        //crockpot.beginGordonTable();
         int i = 1;
         while(true){
             //initialize string
