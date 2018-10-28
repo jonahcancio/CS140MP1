@@ -10,6 +10,8 @@ public class Scheduler{
 
     CrockPot crockpot;
 
+    boolean isContextSwitching = false; //will be true while context switch ongoing
+
     public Scheduler(CrockPot crockpot){
         time = 0;
         this.crockpot = crockpot;
@@ -89,6 +91,7 @@ public class Scheduler{
 
         if(dishBeingCooked == null && !ReadyQueue.isEmpty()){//if there is no dish being cooked and there are dishes to be cooked, cook next dish
             dishBeingCooked = whatIsCookNext(dishBeingCooked);
+            cookString = cookString + dishBeingCooked.name + " chosen, ";
         }else if(dishBeingCooked != null){//if there is a dish cooking, subtract one from its time
             dishBeingCooked.aQueue.get(dishBeingCooked.currentActionIndex).timeLeft--;
         }

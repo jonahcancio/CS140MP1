@@ -60,7 +60,7 @@ public class CrockPot {
 
 	//reads tasklist and dish texts and initializes gordonQueue with all the Dishes and Actions, CALL THIS AT THE START of program
 	public void initGordonQueue() throws IOException {
-		FileReader taskFile = new FileReader(recipesDirectory + "/" + taskFileName);
+		FileReader taskFile = new FileReader(/*recipesDirectory + "/" +*/ taskFileName);
 		BufferedReader taskReader = new BufferedReader(taskFile);
 
 		String taskLine;

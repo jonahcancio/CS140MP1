@@ -4,7 +4,7 @@ public class RoundRobin extends Scheduler{
 	int csMax; //the cs from input file
 	int csTimeLeft; //used to time context switch
 	int qTimeLeft; //used to time cook quantums
-	boolean isContextSwitching; //will be true while context switch ongoing
+	//boolean isContextSwitching;
 	Dish dishBuffer; //Buffer
 
 	public RoundRobin(CrockPot crockpot, int q, int cs) {
@@ -74,6 +74,7 @@ public class RoundRobin extends Scheduler{
 
 		if(dishBeingCooked == null && !isContextSwitching && dishBuffer != null) { //if no dish is being cooked, no longer context switching, and next dish available in buffer
 			dishBeingCooked = dishBuffer;
+			cookString = dishBeingCooked.name + " chosen, ";
 			if(!ReadyQueue.isEmpty()) { //remove dish in dishBuffer from queue
 				ReadyQueue.remove(dishBuffer);
 			}

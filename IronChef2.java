@@ -86,7 +86,10 @@ public class IronChef{
                 }
             }
 
-            if(sched.dishBeingCooked != null && (sched.dishBeingCooked.currentActionIndex < sched.dishBeingCooked.aQueue.size())){//Cook
+            if(sched.isContextSwitching == true){
+                cookString = "context switch";
+                remarksString = "CS. " + remarksString;
+            }else if(sched.dishBeingCooked != null && (sched.dishBeingCooked.currentActionIndex < sched.dishBeingCooked.aQueue.size())){//Cook
                 cookString = sched.dishBeingCooked.name + ("(" + sched.dishBeingCooked.aQueue.get(sched.dishBeingCooked.currentActionIndex).name + "=" + Integer.toString(sched.dishBeingCooked.aQueue.get(sched.dishBeingCooked.currentActionIndex).timeLeft) + ")");
             }else{
                 cookString = "none";
@@ -99,7 +102,6 @@ public class IronChef{
                     readyString = readyString + (ready.name + "(" + ready.aQueue.get(ready.currentActionIndex).name + "=" + ready.aQueue.get(ready.currentActionIndex).timeLeft + "), ");
                 }
             }
-
 
             crockpot.addGordonColumn(Integer.toString(sched.time));//update time column
             crockpot.addGordonColumn(cookString);//update cook column
